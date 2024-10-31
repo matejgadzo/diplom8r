@@ -24,8 +24,8 @@ a, a:visited, a:hover, a:active {
   flex: 0 1 auto;
   height: 100%;
   background: linear-gradient(-60deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 100%;
-  animation: gradient 8s ease infinite;
+  background-size: 400%;
+  animation: gradient 10s ease infinite;
   color: $text-color;
   .header {
     height: 100%;

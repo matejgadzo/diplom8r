@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/diplomator/static/css/main.a29667e9.css",
+    "main.js": "/diplomator/static/js/main.b621a20e.js",
+    "static/js/453.c09f01da.chunk.js": "/diplomator/static/js/453.c09f01da.chunk.js",
+    "index.html": "/diplomator/index.html",
+    "main.a29667e9.css.map": "/diplomator/static/css/main.a29667e9.css.map",
+    "main.b621a20e.js.map": "/diplomator/static/js/main.b621a20e.js.map",
+    "453.c09f01da.chunk.js.map": "/diplomator/static/js/453.c09f01da.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a29667e9.css",
+    "static/js/main.b621a20e.js"
+  ]
+}

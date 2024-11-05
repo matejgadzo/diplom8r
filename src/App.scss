@@ -21,14 +21,15 @@ a, a:visited, a:hover, a:active {
   display: flex;
   flex-flow: column;
   font-family: 'Roboto', sans-serif;
-  flex: 0 1 auto;
+
   background: linear-gradient(-60deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400%;
-  animation: gradient 10s ease infinite;
+  animation: gradient 15s ease infinite;
   color: $text-color;
+  height: 100vh;
+  width: 100vw;
   .header {
-    height: 100%;
-    padding: 2rem;
+    padding: 0 2rem 2rem 2rem;
     display: flex;
     align-items: center;
     flex-flow: row;
@@ -38,10 +39,10 @@ a, a:visited, a:hover, a:active {
       width: 100%;
       align-items: center;
       justify-content: space-evenly;
-      .menuLink {
+      .menuLink,a {
         text-decoration: none;
       }
-      .menuItem {
+      .menuItem{
         cursor: pointer;
         font-size: 1.5em;
         padding: 0 2em 0 2em;
@@ -64,7 +65,7 @@ a, a:visited, a:hover, a:active {
       align-items: center;
       padding: 2em;
       width: 100%;
-      height: 60%;
+      height: 100%;
       .title {
         font-size: 2em;
       }
@@ -76,8 +77,8 @@ a, a:visited, a:hover, a:active {
         margin: 2em 0 2em 0;
         border: 1em dashed $text-color;
         border-radius: 2em;
-        width: 50rem;
-        height: 30rem;
+        width: 65rem;
+        height: 15rem;
         transition: transform 300ms ease;
         &:hover {        
           border-color: $highlight-color;
@@ -91,7 +92,7 @@ a, a:visited, a:hover, a:active {
 
     flex-direction: row;
     justify-content: center;
-    padding: 3rem;
+    padding: 2rem 1rem 2rem 1rem;
     .footerText {
       font-size: 1.5em;
     }

@@ -1,10 +1,9 @@
-import "/src/App.scss"
+import "../App.scss";
 function Templates() {
     return (
-        <div className="templates">
+        <div className="container">
             <h1>Templates</h1>
         </div>
     );
 }
-
 export default Templates;

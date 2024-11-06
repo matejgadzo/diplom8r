@@ -21,8 +21,7 @@ a, a:visited, a:hover, a:active {
   display: flex;
   flex-flow: column;
   font-family: 'Roboto', sans-serif;
-
-  background: linear-gradient(-60deg, #443632, #684b56, #404c50, #192421);
+  background: linear-gradient(-60deg, #342724, #49343c, #404c50, #192421);
   background-size: 400%;
   animation: gradient 15s ease infinite;
   color: $text-color;
@@ -80,9 +79,17 @@ a, a:visited, a:hover, a:active {
         width: 65rem;
         height: 15rem;
         transition: transform 300ms ease;
-        &:hover {        
+        .uploadIcon{
+          fill: $text-color;
+          width: 5rem;
+          height: 10rem;
+        }
+        &:hover{        
           border-color: $highlight-color;
           transform: scale(1.1);
+          .uploadIcon{
+            fill: $highlight-color;
+          }
         }
       }
     }

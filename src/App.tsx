@@ -13,7 +13,7 @@ function App() {
           <h1 className="heroTitle">Diplom8r</h1>
         </div>
         <ul className="menu">
-          <li className="menuItem active"><Link to={"/"}>Home</Link></li>
+          <li className="menuItem active"><Link to={""}>Home</Link></li>
           <li className="menuItem"><Link to={"/templates"}>Templates</Link></li>
           <li className="menuItem"><Link to={"/account"}>Account</Link></li>
         </ul>

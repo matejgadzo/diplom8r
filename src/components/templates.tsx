@@ -1,8 +1,8 @@
 import "../App.scss";
 function Templates() {
     return (
-        <div className="container">
-            <h1>Templates</h1>
+        <div className="templateContainer">
+            <h1>Thine Templates, m'Lord</h1>
         </div>
     );
 }

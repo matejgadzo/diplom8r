@@ -5,6 +5,7 @@ import { Modal } from '@mui/material';
 function Home() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = useState<string | null>(null);
+    const [fileUrl, setFileUrl] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const handleDivClick = () => {
         // Trigger click on the hidden file input
@@ -15,6 +16,7 @@ function Home() {
         const files = event.target.files;
         if (files && files.length > 0) {
             const selectedFile = files[0];
+            const fileUrl = URL.createObjectURL(selectedFile);
             setFileName(selectedFile.name); // Save the file name for modal display
             setIsModalOpen(true); // Open the modal when a file is selected
         }
@@ -22,6 +24,10 @@ function Home() {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        if (fileUrl) {
+            URL.revokeObjectURL(fileUrl); // Clean up the URL to prevent memory leaks
+            setFileUrl(null);
+        }
     };
 
     return (

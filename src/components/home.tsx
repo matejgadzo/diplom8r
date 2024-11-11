@@ -2,11 +2,15 @@ import "../App.scss";
 import {ReactComponent as Logo} from "../assets/icon-upload.svg";
 import React, {useRef, useState} from "react";
 import { Modal } from '@mui/material';
+import {Document, Page, pdfjs} from "react-pdf";
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
 function Home() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = useState<string | null>(null);
-    const [fileUrl, setFileUrl] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
     const handleDivClick = () => {
         // Trigger click on the hidden file input
         fileInputRef.current?.click();
@@ -14,9 +18,9 @@ function Home() {
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
+        console.log(files);
         if (files && files.length > 0) {
             const selectedFile = files[0];
-            const fileUrl = URL.createObjectURL(selectedFile);
             setFileName(selectedFile.name); // Save the file name for modal display
             setIsModalOpen(true); // Open the modal when a file is selected
         }
@@ -24,10 +28,6 @@ function Home() {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        if (fileUrl) {
-            URL.revokeObjectURL(fileUrl); // Clean up the URL to prevent memory leaks
-            setFileUrl(null);
-        }
     };
 
     return (
@@ -43,8 +43,11 @@ function Home() {
                 aria-labelledby="file-preview-modal"
                 aria-describedby="file-preview-description"
             >
-                <div className="modal-content" style={modalContentStyles}>
-                    <button onClick={handleCloseModal} style={closeButtonStyles}>Cancel</button>
+                <div className="modalContent">
+                    <Document file={fileInputRef.current?.files?.[0]} className="document">
+                        <Page width={500} height={500} pageNumber={1} className="page"></Page>
+                    </Document>
+                    <button onClick={handleCloseModal} className="cancelButton">Cancel</button>
                     {fileName && (
                         <p className="fileInfo">
                             Selected File: {fileName}
@@ -55,27 +58,6 @@ function Home() {
         </div>
     );
 }
-const modalContentStyles: React.CSSProperties = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: 'white',
-    padding: '20px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    textAlign: 'center',
-    maxWidth: '400px',
-    width: '100%',
-};
 
-const closeButtonStyles: React.CSSProperties = {
-    backgroundColor: '#f44336',
-    color: 'white',
-    border: 'none',
-    padding: '5px 10px',
-    cursor: 'pointer',
-    borderRadius: '4px',
-    marginBottom: '10px',
-};
 
 export default Home;

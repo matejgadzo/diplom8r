@@ -22,12 +22,14 @@ function Home() {
         if (files && files.length > 0) {
             const selectedFile = files[0];
             setFileName(selectedFile.name); // Save the file name for modal display
-            setIsModalOpen(true); // Open the modal when a file is selected
+            setIsModalOpen(true); 
+            console.log("modal opened");// Open the modal when a file is selected
         }
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        console.log("modal closed");
     };
 
     return (
@@ -40,19 +42,18 @@ function Home() {
             <Modal
                 open={isModalOpen}
                 onClose={handleCloseModal}
-                aria-labelledby="file-preview-modal"
-                aria-describedby="file-preview-description"
+                className="modalContent"
             >
-                <div className="modalContent">
+                <div>
+                {fileName && (
+                        <h1 className="title">
+                            Selected File: {fileName}
+                        </h1>
+                    )}
+                    <button onClick={handleCloseModal} className="cancelButton">Cancel</button>
                     <Document file={fileInputRef.current?.files?.[0]} className="document">
                         <Page width={500} height={500} pageNumber={1} className="page"></Page>
                     </Document>
-                    <button onClick={handleCloseModal} className="cancelButton">Cancel</button>
-                    {fileName && (
-                        <p className="fileInfo">
-                            Selected File: {fileName}
-                        </p>
-                    )}
                 </div>
             </Modal>
         </div>

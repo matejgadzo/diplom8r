@@ -52,7 +52,7 @@ function Home() {
                     )}
                     <button onClick={handleCloseModal} className="cancelButton">Cancel</button>
                     <Document file={fileInputRef.current?.files?.[0]} className="document">
-                        <Page width={500} height={500} pageNumber={1} className="page"></Page>
+                        <Page width={600} height={600} pageNumber={1} className="page"></Page>
                     </Document>
                 </div>
             </Modal>

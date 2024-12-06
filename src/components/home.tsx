@@ -16,14 +16,10 @@ function Home() {
     const element = event.target as HTMLInputElement;
     element.value = "";
     fileInputRef.current?.click();
-    setFileName(null);
-    console.log("div clicked");
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    console.log("modal opened");
-    console.log(files);
     if (files && files.length > 0) {
       const selectedFile = files[0];
       setFileName(selectedFile.name); // Save the file name for modal display
@@ -33,8 +29,6 @@ function Home() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setFileName("");
-    console.log("modal closed");
   };
 
   return (

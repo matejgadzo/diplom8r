@@ -3,10 +3,11 @@ import { ReactComponent as Logo } from "../assets/icon-upload.svg";
 import React, { useRef, useState } from "react";
 import { Modal } from "@mui/material";
 import { Document, Page, pdfjs } from "react-pdf";
-import QRCode from 'qrcode.react';
-import { PDFDocument } from 'pdf-lib';
+import { QRCodeCanvas } from "qrcode.react";
+import { PDFDocument } from "pdf-lib";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
+import { preProcessFile } from "typescript";
 
 function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -21,8 +22,9 @@ function Home() {
   });
 
   pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-  const handleDivClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-    // Trigger click on the hidden file input
+  const handleDivClick = (
+    event: React.MouseEvent<HTMLInputElement, MouseEvent>
+  ) => {
     const element = event.target as HTMLInputElement;
     element.value = "";
     fileInputRef.current?.click();
@@ -34,8 +36,17 @@ function Home() {
       const selectedFile = files[0];
       setFileName(selectedFile.name); // Save the file name for modal display
       setPdfFile(selectedFile); // Store the selected PDF file
+      setPageNumber(1); // Reset page number
+      console.log("size", selectedFile);
       setIsModalOpen(true); // Open the modal when a file is selected
     }
+  };
+  const nextPage = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
+  const previousPage = () => {
+    setPageNumber(pageNumber - 1);
   };
 
   const handleCloseModal = () => {
@@ -58,13 +69,12 @@ function Home() {
 
   const generatePdfWithQrCode = async () => {
     if (!pdfFile || !qrData) return;
-
     const existingPdfBytes = await pdfFile.arrayBuffer();
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
     // Create a canvas for QR code generation
     const qrCanvas = document.createElement("canvas");
-   // QRCode.toCanvas(qrCanvas, qrData, { width: 100 });
+    //QRCodeCanvas
     const imageBytes = qrCanvas.toDataURL("image/png");
     const image = await pdfDoc.embedPng(imageBytes);
 
@@ -93,7 +103,7 @@ function Home() {
     <div className="container">
       <h1 className="title">Upload a document you want to sign</h1>
       <div className="uploadArea" onClick={handleDivClick}>
-        <Logo className="uploadIcon"/>
+        <Logo className="uploadIcon" />
         <input
           ref={fileInputRef}
           onChange={handleFileChange}
@@ -102,53 +112,44 @@ function Home() {
           accept="application/pdf"
         />
       </div>
-      <Modal
-        open={isModalOpen}
-        onClose={handleCloseModal}
-        className="modalContent"
-      >
-        <div>
-          {fileName && <h1 className="title">Selected File: {fileName}</h1>}
-          <button onClick={handleCloseModal} className="cancelButton">
-            Cancel
-          </button>
-
-          {/* QR Code Input */}
-          <div>
-            <input
-              type="text"
-              value={qrData}
-              onChange={handleQrDataChange}
-              placeholder="Enter QR Code Data"
-            />
+      <Modal open={isModalOpen} onClose={handleCloseModal}>
+        <div className="modalContent">
+          <div className="controls">
+            {fileName && <span className="title">File: {fileName}</span>}
+            <div className="controlButtons">
+              <button onClick={previousPage} className="docNavigation">
+                Previous Page
+              </button>
+              <button onClick={nextPage} className="docNavigation">
+                Next Page
+              </button>
+              <button onClick={handleCloseModal} className="cancelButton">
+                Cancel
+              </button>
+              <button onClick={generatePdfWithQrCode} className="saveButton">
+                Export PDF with QR Code
+              </button>
+            </div>
+            {/* QR Code Input 
+            <div>
+              <input
+                type="text"
+                value={qrData}
+                onChange={handleQrDataChange}
+                placeholder="Enter QR Code Data"
+              />
+            </div>*/}
           </div>
-
+          <div className="documentView">
             <Document file={pdfFile}>
               <Page
-                width={600}
-                height={650}
                 pageNumber={pageNumber}
                 className="page"
+                width={600}
+                height={750}
               />
             </Document>
-
-            {/* QR Code Overlay (allows for dragging the QR code) */}
-            <div
-              style={{
-                position: "absolute",
-                left: qrPosition.x,
-                top: qrPosition.y,
-                cursor: "pointer",
-              }}
-              onMouseDown={(e) => e.preventDefault()}
-              onMouseMove={handleQrDrag}
-            >
-            {/* <QRCode value={qrData} size={100} /> */}
-            </div>
-
-          <button onClick={generatePdfWithQrCode} className="saveButton">
-            Save PDF with QR Code
-          </button>
+          </div>
         </div>
       </Modal>
     </div>

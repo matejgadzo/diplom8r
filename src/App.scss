@@ -115,14 +115,11 @@ a, a:visited, a:hover, a:active {
   position: absolute;
   display: flex;
   flex-direction: row;
-  align-self: center;
-  top: 50%;
-  left: 50%;
-  padding: 2rem;
+  justify-content: center;
   border: none;
-  width: 50%;
   color: $text-color;
   font-family: 'Roboto', sans-serif;
+  overflow: auto;
   .cancelButton{
     color: white;
     border: none;

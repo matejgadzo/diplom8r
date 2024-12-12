@@ -36,7 +36,7 @@ function Home() {
       const selectedFile = files[0];
       const buffer = await selectedFile.arrayBuffer();
       const pdfDoc = await PDFDocument.load(buffer);
-      setNumOfPages(pdfDoc.getPageCount());
+      setNumOfPages(pdfDoc.getPageCount());// Set the number of pages for document navigation
       setFileName(selectedFile.name); // Save the file name for modal display
       setPdfFile(selectedFile); // Store the selected PDF file
       setPageNumber(1); // Reset page number
@@ -62,53 +62,6 @@ function Home() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-  };
-  const handleQrDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQrData(event.target.value); // Change QR code data
-  };
-
-  // Function to handle dragging the QR code around the page
-  const handleQrDrag = (event: React.MouseEvent) => {
-    const offsetX = event.clientX - qrPosition.x;
-    const offsetY = event.clientY - qrPosition.y;
-
-    setQrPosition({
-      x: offsetX,
-      y: offsetY,
-    });
-  };
-
-  const generatePdfWithQrCode = async () => {
-    if (!pdfFile || !qrData) return;
-    const existingPdfBytes = await pdfFile.arrayBuffer();
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-
-    // Create a canvas for QR code generation
-    const qrCanvas = document.createElement("canvas");
-    //QRCodeCanvas
-    const imageBytes = qrCanvas.toDataURL("image/png");
-    const image = await pdfDoc.embedPng(imageBytes);
-    console.log(pdfDoc.getPageCount());
-
-    // Get the page to add the QR code
-    const page = pdfDoc.getPage(pageNumber - 1);
-    page.drawImage(image, {
-      x: qrPosition.x,
-      y: qrPosition.y,
-      width: 100,
-      height: 100,
-    });
-
-    // Save the PDF with the new QR code
-    const pdfBytes = await pdfDoc.save();
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
-
-    // Create a download link for the modified PDF
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = fileName + "signed.pdf";
-    link.click();
   };
 
   return (
@@ -140,7 +93,7 @@ function Home() {
               <button onClick={handleCloseModal} className="cancelButton">
                 Cancel
               </button>
-              <button onClick={generatePdfWithQrCode} className="saveButton">
+              <button onClick={handleCloseModal} className="saveButton">
                 Export signed PDF
               </button>
             </div>

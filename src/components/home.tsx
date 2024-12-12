@@ -46,7 +46,11 @@ function Home() {
   };
 
   const previousPage = () => {
-    setPageNumber(pageNumber - 1);
+    if (pageNumber > 1){
+      setPageNumber(pageNumber - 1);
+    }else{
+      window.alert("You are on the first page");
+    }
   };
 
   const handleCloseModal = () => {
@@ -95,7 +99,7 @@ function Home() {
     // Create a download link for the modified PDF
     const link = document.createElement("a");
     link.href = url;
-    link.download = "modified-pdf.pdf";
+    link.download = fileName + "signed.pdf";
     link.click();
   };
 
@@ -127,7 +131,7 @@ function Home() {
                 Cancel
               </button>
               <button onClick={generatePdfWithQrCode} className="saveButton">
-                Export PDF with QR Code
+                Export signed PDF
               </button>
             </div>
             {/* QR Code Input 

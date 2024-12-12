@@ -15,6 +15,7 @@ function Home() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [numOfPages, setNumOfPages] = useState(0);
   const [qrData, setQrData] = useState("https://example.com");
   const [qrPosition, setQrPosition] = useState<{ x: number; y: number }>({
     x: 50,
@@ -29,20 +30,26 @@ function Home() {
     element.value = "";
     fileInputRef.current?.click();
   };
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const selectedFile = files[0];
+      const buffer = await selectedFile.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(buffer);
+      setNumOfPages(pdfDoc.getPageCount());
       setFileName(selectedFile.name); // Save the file name for modal display
       setPdfFile(selectedFile); // Store the selected PDF file
       setPageNumber(1); // Reset page number
-      console.log("size", selectedFile);
       setIsModalOpen(true); // Open the modal when a file is selected
-      generatePdfWithQrCode();
     }
   };
   const nextPage = () => {
-    setPageNumber(pageNumber + 1);
+    if(pageNumber === numOfPages){
+      window.alert("You are on the last page");
+      return;
+    }else{
+      setPageNumber(pageNumber + 1);
+    }
   };
 
   const previousPage = () => {

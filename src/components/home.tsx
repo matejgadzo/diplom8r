@@ -38,6 +38,7 @@ function Home() {
       setPageNumber(1); // Reset page number
       console.log("size", selectedFile);
       setIsModalOpen(true); // Open the modal when a file is selected
+      generatePdfWithQrCode();
     }
   };
   const nextPage = () => {
@@ -45,9 +46,9 @@ function Home() {
   };
 
   const previousPage = () => {
-    if (pageNumber > 1){
+    if (pageNumber > 1) {
       setPageNumber(pageNumber - 1);
-    }else{
+    } else {
       window.alert("You are on the first page");
     }
   };
@@ -80,6 +81,7 @@ function Home() {
     //QRCodeCanvas
     const imageBytes = qrCanvas.toDataURL("image/png");
     const image = await pdfDoc.embedPng(imageBytes);
+    console.log(pdfDoc.getPageCount());
 
     // Get the page to add the QR code
     const page = pdfDoc.getPage(pageNumber - 1);
@@ -126,6 +128,8 @@ function Home() {
               <button onClick={nextPage} className="docNavigation">
                 Next Page
               </button>
+            </div>
+            <div className="controlButtons">
               <button onClick={handleCloseModal} className="cancelButton">
                 Cancel
               </button>

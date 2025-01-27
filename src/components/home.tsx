@@ -4,7 +4,6 @@ import React, { useRef, useState } from "react";
 import { Modal } from "@mui/material";
 import { Document, Page, pdfjs } from "react-pdf";
 import { PDFDocument, PDFAnnotation } from "pdf-lib";
-import { QRCodeSVG } from "qrcode.react";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
@@ -24,13 +23,15 @@ function Home() {
     element.value = "";
     fileInputRef.current?.click();
   };
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const selectedFile: File = files[0];
       const buffer: ArrayBuffer = await selectedFile.arrayBuffer();
       const pdfDoc: PDFDocument = await PDFDocument.load(buffer);
-      setNumOfPages(pdfDoc.getPageCount());// Set the number of pages for document navigation
+      setNumOfPages(pdfDoc.getPageCount()); // Set the number of pages for document navigation
       setFileName(selectedFile.name); // Save the file name for modal display
       setPdfFile(selectedFile); // Store the selected PDF file
       setCurrentPage(1); // Reset page number
@@ -38,10 +39,10 @@ function Home() {
     }
   };
   const nextPage = () => {
-    if(currentPage === numOfPages){
+    if (currentPage === numOfPages) {
       window.alert("You are on the last page");
       return;
-    }else{
+    } else {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -55,13 +56,17 @@ function Home() {
   };
 
   const generateQRCode = () => {
-    if (pdfFile) {
-    }
-      <QRCodeSVG
-      value="cotrugli.online"
-      ></QRCodeSVG>
+    const link = "https://cotrugli.org";
+    const canvas = document.createElement("canvas");
+    return canvas.toDataURL();
   };
 
+  const embedToPDF = async () => {
+    const buffer: ArrayBuffer = await pdfFile!.arrayBuffer();
+    const pdfDoc: PDFDocument = await PDFDocument.load(buffer);
+    // pdfDoc.embedPng(generateQRCode());
+    await pdfDoc.save();
+  };
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
@@ -99,15 +104,6 @@ function Home() {
                 Start Signing
               </button>
             </div>
-            {/* QR Code Input 
-            <div>
-              <input
-                type="text"
-                value={qrData}
-                onChange={handleQrDataChange}
-                placeholder="Enter QR Code Data"
-              />
-            </div>*/}
           </div>
           <div className="documentView">
             <Document file={pdfFile}>
